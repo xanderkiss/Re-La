@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จัดเรียงสกินแคร์ by LáorSkincare</title>
+    <style>
+        /* General Style */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            margin-top: 40px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 16px;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        select:focus {
+            border-color: #4CAF50;
+            background-color: #e9f7e9;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 18px;
+            padding: 15px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Result Section */
+        .result {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .result h2 {
+            font-size: 20px;
+            color: #4CAF50;
+        }
+
+        ul {
+            padding-left: 20px;
+            line-height: 1.8;
+        }
+
+        li {
+            font-size: 16px;
+            color: #444;
+        }
+
+        /* Media Queries */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+                width: 90%;
+            }
+
+            button {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Láor Skincare</h1>
+        <form id="skincare-form">
+            <label for="skin-type">1. เลือกประเภทผิวของคุณ:</label>
+            <select id="skin-type" required>
+                <option value="">-- กรุณาเลือก --</option>
+                <option value="normal">ผิวปกติ</option>
+                <option value="dry">ผิวแห้ง</option>
+                <option value="oily">ผิวมัน</option>
+                <option value="combination">ผิวผสม</option>
+                <option value="sensitive">ผิวบอบบางแพ้ง่าย</option>
+            </select>
+
+            <label for="time-of-day">2. คุณต้องการใช้สกินแคร์ในช่วงเวลาใด:</label>
+            <select id="time-of-day" required>
+                <option value="">-- กรุณาเลือก --</option>
+                <option value="morning">ตอนเช้า</option>
+                <option value="evening">ตอนเย็น</option>
+            </select>
+
+            <button type="button" id="arrange-skincare">เรียงสกินแคร์</button>
+        </form>
+
+        <div id="result" class="result">
+            <h2>ลำดับการใช้งานสกินแคร์:</h2>
+            <ul id="skincare-steps"></ul>
+        </div>
+    </div>
+
+    <script>
+        const skincareData = {
+            normal: {
+                morning: [
+                    "Cleansing oil หรือ Cleansing mousse",
+                    "Exo cica",
+                    "Vivid",
+                    "Niacinamide",
+                    "Brightly",
+                    "Barrier",
+                    "กันแดด"
+                ],
+                evening: [
+                    "Cleansing oil",
+                    "Cleansing mousse",
+                    "De nuit C",
+                    "AHA",
+                    "Exo cica",
+                    "Retinight (ใช้วันเว้นวันสลับกับ AHA)",
+                    "Night repair",
+                    "Barrier"
+                ]
+            },
+            dry: {
+                morning: [
+                    "Cleansing mousse",
+                    "Exo cica",
+                    "Vivid",
+                    "Niacinamide",
+                    "Brightly",
+                    "Barrier",
+                    "กันแดด"
+                ],
+                evening: [
+                    "Cleansing oil",
+                    "Cleansing mousse",
+                    "De nuit C",
+                    "AHA",
+                    "Exo cica",
+                    "Retinight ใช้วันเว้นวันลดการระคายเคือง",
+                    "Night repair",
+                    "Barrier"
+                ]
+            },
+            oily: {
+                morning: [
+                    "Cleansing mousse",
+                    "Vivid",
+                    "Niacinamide",
+                    "Brightly",
+                    "Barrier",
+                    "De nuit C",
+                    "กันแดด"
+                ],
+                evening: [
+                    "Cleansing oil",
+                    "Cleansing mousse",
+                    "De nuit C",
+                    "BHA",
+                    "Exo cica",
+                    "Retinight (ใช้วันเว้นวันสลับกับ BHA)",
+                    "Barrier"
+                ]
+            },
+            combination: {
+                morning: [
+                    "Cleansing mousse",
+                    "Vivid",
+                    "Niacinamide (เน้นบริเวณ T-zone)",
+                    "Brightly",
+                    "Barrier (ทาบริเวณผิวแห้ง)",
+                    "De nuit C (หากมีปัญหารอบดวงตา)",
+                    "กันแดด"
+                ],
+                evening: [
+                    "Cleansing oil",
+                    "Cleansing mousse",
+                    "BHA ทาบริเวณ T-zone (1-2 ครั้งต่อสัปดาห์)",
+                    "Exo cica",
+                    "Retinight (ใช้วันเว้นวันสลับกับ BHA)",
+                    "Night repair ทาบริเวณผิวแห้ง",
+                    "Barrier"
+                ]
+            },
+            sensitive: {
+                morning: [
+                    "Cleansing mousse",
+                    "Exo cica",
+                    "Vivid",
+                    "Barrier",
+                    "De nuit C",
+                    "กันแดด"
+                ],
+                evening: [
+                    "Cleansing oil",
+                    "Cleansing mousse",
+                    "Exo cica",
+                    "Night repair",
+                    "Barrier"
+                ]
+            }
+        };
+
+        document.getElementById("arrange-skincare").addEventListener("click", () => {
+            const skinType = document.getElementById("skin-type").value;
+            const timeOfDay = document.getElementById("time-of-day").value;
+
+            if (!skinType || !timeOfDay) {
+                alert("กรุณาเลือกตัวเลือกให้ครบ");
+                return;
+            }
+
+            const steps = skincareData[skinType][timeOfDay];
+            const stepsList = document.getElementById("skincare-steps");
+            stepsList.innerHTML = "";
+
+            steps.forEach(step => {
+                const li = document.createElement("li");
+                li.textContent = step;
+                stepsList.appendChild(li);
+            });
+
+            document.getElementById("result").style.display = "block";
+        });
+    </script>
+</body>
+</html>
